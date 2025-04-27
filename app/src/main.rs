@@ -1,4 +1,5 @@
 use std::path::{Path, PathBuf};
+use serde_derive::{Deserialize, Serialize};
 
 const ROOT_PATH: &str = "../target_app/";
 
@@ -30,6 +31,7 @@ fn get_typescript_files(path: &Path) -> Vec<PathBuf> {
     
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 struct FileRelationship {
     file_path: String,
     source_path: String,
@@ -64,7 +66,14 @@ fn get_relationship_list() -> Vec<FileRelationship> {
 
 
 fn main() {
-    let relationship_list = get_relationship_list();
+    let relationship_list: Vec<FileRelationship> = get_relationship_list();
+    // json形式で出力
+    let json_data = serde_json::to_string(&relationship_list).unwrap();
+    let output_path = Path::new("./../output").join("relationship.json");
+    std::fs::create_dir_all(output_path.parent().unwrap()).unwrap();
+    // JSONファイルに書き込む
+    std::fs::write(output_path, json_data).unwrap();
+
     for relationship in relationship_list {
         println!("{} -> {}", relationship.file_path, relationship.source_path);
     }
