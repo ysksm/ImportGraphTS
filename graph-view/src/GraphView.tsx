@@ -103,7 +103,7 @@ const GraphView: React.FC = () => {
       <h1>Dependency Graph</h1>
       <p>Click and drag to pan, scroll to zoom.</p>
       <p>Click on a node to see its dependencies.</p>
-      <div style={{ width: '100%', height: '80vh' }}>
+      <div style={{ width: '98vw', height: '80vh' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
