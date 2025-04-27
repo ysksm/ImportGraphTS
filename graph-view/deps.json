@@ -1,0 +1,50 @@
+[
+  {
+    "fullPath": "/index.css",
+    "FileName": "index.css",
+    "isRoot": false,
+    "Imports": []
+  },
+  {
+    "fullPath": "/assets/react.svg",
+    "FileName": "react.svg",
+    "isRoot": false,
+    "Imports": []
+  },
+  {
+    "fullPath": "/App.css",
+    "FileName": "App.css",
+    "isRoot": false,
+    "Imports": []
+  },
+  {
+    "fullPath": "/App.tsx",
+    "FileName": "App.tsx",
+    "isRoot": false,
+    "Imports": [
+      {
+        "fullPath": "/assets/react.svg",
+        "FileName": "react.svg"
+      },
+      {
+        "fullPath": "/App.css",
+        "FileName": "App.css"
+      }
+    ]
+  },
+  {
+    "fullPath": "/main.tsx",
+    "FileName": "main.tsx",
+    "isRoot": true,
+    "Imports": [
+      {
+        "fullPath": "/index.css",
+        "FileName": "index.css"
+      },
+      {
+        "fullPath": "/App.tsx",
+        "FileName": "App.tsx"
+      }
+    ]
+  }
+]
