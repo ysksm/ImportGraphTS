@@ -21,11 +21,29 @@ function collectDeps(rootPath: string, isRoot: boolean, deps: Dependency[]) {
       const resolvedPath = path.resolve(path.dirname(rootPath), importPath);
       if (fs.existsSync(resolvedPath)) {
         dependency.Imports.push({
-          
           fullPath: resolvedPath,
           FileName: path.basename(resolvedPath)
         });
         collectDeps(resolvedPath, false, deps);
+        return;
+      }
+      const resolvedPathTs = path.resolve(path.dirname(rootPath), importPath + '.ts');
+      if (fs.existsSync(resolvedPathTs)) {
+        dependency.Imports.push({
+          fullPath: resolvedPathTs,
+          FileName: path.basename(resolvedPathTs)
+        });
+        collectDeps(resolvedPathTs, false, deps);
+        return;
+      }
+      const resolvedPathTsx = path.resolve(path.dirname(rootPath), importPath + '.tsx');
+      if (fs.existsSync(resolvedPathTsx)) {
+        dependency.Imports.push({
+          fullPath: resolvedPathTsx,
+          FileName: path.basename(resolvedPathTsx)
+        });
+        collectDeps(resolvedPathTsx, false, deps);
+        return;
       }
     }
   });
@@ -58,4 +76,4 @@ deps.forEach(dep => {
 });
 
 console.log('Dependencies:', deps);
-fs.writeFileSync('./../output/deps.json', JSON.stringify(deps, null, 2));
+fs.writeFileSync('./../graph-view/deps.json', JSON.stringify(deps, null, 2));
