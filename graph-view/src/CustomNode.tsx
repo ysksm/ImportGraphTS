@@ -1,38 +1,48 @@
 import { Handle, Position } from "@xyflow/react";
 
-const CustomFolderNode = ( { data, width, height} : { data: { label: string }, width: number, height: number }) => {
+// Simple component that accepts the props we need
+const CustomFolderNode = (props: any) => {
+  const { data, width = 150, height = 50 } = props;
   return (
     <div style={{ 
         padding: 0, 
         margin: 0,
         border: '1px solid #555', 
         borderRadius: 10, 
-        backgroundColor: '#888', 
-        color: '#333',
-        width: width,
-        height: height,
-        opacity: 0.3,
+        backgroundColor: '#F5A742', 
+        color: '#fff',
+        width: width || 150,
+        height: height || 50,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 'bold',
       }}>
-      {data.label}
+      {data?.label}
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />
     </div>
   );
 };
 
-const CustomNode = ( { data, width, height} : { data: { label: string }, width: number, height: number }) => {
+const CustomNode = (props: any) => {
+  const { data, width = 150, height = 50 } = props;
   return (
     <div style={{ 
         padding: 0, 
         margin: 0,
         border: '1px solid #555', 
         borderRadius: 10, 
-        backgroundColor: '#888', 
-        color: '#333',
-        width: width,
-        height: height,
+        backgroundColor: '#3178C6', 
+        color: '#fff',
+        width: width || 150,
+        height: height || 50,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 'bold',
       }}>
-      {data.label}
+      {data?.label}
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />
     </div>

@@ -163,7 +163,7 @@ const getDirectoryNodes = (): LayoutedNodes => {
                 source: item.id,
                 target: child.id,
                 animated: false,
-                type: 'step'
+                type: 'folderEdge',
             };
             initialEdges.push(edge);
         }
@@ -240,7 +240,7 @@ const getDirectoryNodes = (): LayoutedNodes => {
                     source: fileNode.id,
                     target: imp.fullPath,
                     animated: false,
-                    type: 'simplebezier'
+                    type: 'fileEdge',
 
                 };
                 initialEdges.push(edge);
