@@ -18,16 +18,44 @@ function collectDeps(rootPath: string, isRoot: boolean, deps: Dependency[]) {
 
   sf.forEachChild(node => {
     if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
-      const importPath = node.moduleSpecifier.text;
+      const importPath = node.moduleSpecifier.text.replaceAll('@/', './');
       const resolvedPath = path.resolve(path.dirname(rootPath), importPath);
       const resolvedPathIndex = path.resolve(path.dirname(rootPath), importPath, 'index.ts');
+      const resolvedPathIndexTsx = path.resolve(path.dirname(rootPath), importPath, 'index.tsx');
       const resolvedPathTs = path.resolve(path.dirname(rootPath), importPath + '.ts');
       const resolvedPathTsx = path.resolve(path.dirname(rootPath), importPath + '.tsx');
       const importFilePath = fs.existsSync(resolvedPathTsx) ? resolvedPathTsx : 
         fs.existsSync(resolvedPathTs) ? resolvedPathTs : 
-        fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile() ? resolvedPath : resolvedPathIndex;
+        fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile() ? resolvedPath : 
+        fs.existsSync(resolvedPathIndex) ? resolvedPathIndex : resolvedPathIndexTsx;
 
       console.log('Importing:', importPath, 'from', rootPath);
+      if (fs.existsSync(importFilePath)) {
+        dependency.Imports.push({
+          fullPath: importFilePath,
+          FileName: path.basename(importFilePath)
+        });
+        collectDeps(importFilePath, false, deps);
+        return;
+      }
+    }
+    if(ts.isExportDeclaration(node)){
+      const exportPath = node.moduleSpecifier?.getText().replaceAll('@/', './').replace(/['"]/g, '');
+      if( exportPath === undefined){
+        return;
+      }
+      console.log('Exporting:', exportPath, 'from', rootPath);
+      const resolvedPath = path.resolve(path.dirname(rootPath), exportPath);
+      const resolvedPathIndex = path.resolve(path.dirname(rootPath), exportPath, 'index.ts');
+      const resolvedPathIndexTsx = path.resolve(path.dirname(rootPath), exportPath, 'index.tsx');
+      const resolvedPathTs = path.resolve(path.dirname(rootPath), exportPath + '.ts');
+      const resolvedPathTsx = path.resolve(path.dirname(rootPath), exportPath + '.tsx');
+      const importFilePath = fs.existsSync(resolvedPathTsx) ? resolvedPathTsx : 
+        fs.existsSync(resolvedPathTs) ? resolvedPathTs : 
+        fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile() ? resolvedPath : 
+        fs.existsSync(resolvedPathIndex) ? resolvedPathIndex : resolvedPathIndexTsx;
+
+      console.log('Importing:', exportPath, 'from', rootPath);
       if (fs.existsSync(importFilePath)) {
         dependency.Imports.push({
           fullPath: importFilePath,
