@@ -11,6 +11,7 @@ import {
   type FitViewOptions,
   type DefaultEdgeOptions,
   type OnConnect,
+  MiniMap,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import CustomNode from './CustomNode';
@@ -41,8 +42,8 @@ const GraphView: React.FC = () => {
   );
   return (
     <>
-      <h1>Dependency Graph</h1>
-      <div style={{ width: '98vw', height: '80vh', color: '#333' }}>
+      <div>Dependency Graph</div>
+      <div style={{ width: '100vw', height: '95vh', color: '#333', background: '#fff' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -56,6 +57,7 @@ const GraphView: React.FC = () => {
           edgeTypes={edgeTypes}
         >
           <Background />
+          <MiniMap />
           <Controls />
         </ReactFlow>
       </div>

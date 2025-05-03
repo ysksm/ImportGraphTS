@@ -38,7 +38,7 @@ const getLayoutedNodesWithTotalRect = (nodes: Node[]): { nodes: Node[], width: n
     nodes.forEach((node) => {
         const { x, y } = g.node(node.id);
         const width = Number(node.style?.width || 150);
-        const height = Number(node.style?.height || 100);
+        const height = Number(node.style?.height || 50);
         maxWidth = Math.max(maxWidth, x + width);
         maxHeight = Math.max(maxHeight, y + height);
     });
@@ -46,7 +46,7 @@ const getLayoutedNodesWithTotalRect = (nodes: Node[]): { nodes: Node[], width: n
     const fileNodes = nodes.map((node) => {
         const { x, y } = g.node(node.id);
         const width = Number(node.style?.width || 150);
-        const height = Number(node.style?.height || 100);   
+        const height = Number(node.style?.height || 50);   
         return {
             ...node,
             position: {x, y},
@@ -203,9 +203,9 @@ const getDirectoryNodes = (): LayoutedNodes => {
 
     // [レイアウト]フォルダ内のファイルノードをレイアウト
     layoutedFolderNodes.forEach((node) => {
+        // ファイルノードの作成
         const fileNodes: Node[] = node.data.fileNodes as Node[];
         fileNodes.forEach((fileNode) => {
-            const { x, y } = node.position;
             const width = Number(fileNode.initialWidth || 150);
             const height = Number(fileNode.initialHeight || 100);
             const nodeData: NodeDataType = {
@@ -215,6 +215,7 @@ const getDirectoryNodes = (): LayoutedNodes => {
             }
             const newFileNode: Node = {
                 id: fileNode.id,
+                parentId: node.id,
                 type: 'custom',
                 data: nodeData,
                 initialHeight: height,
@@ -223,8 +224,9 @@ const getDirectoryNodes = (): LayoutedNodes => {
                     width: width,
                     height: height,
                 },
-                position: {x: x + fileNode.position.x, y: y + fileNode.position.y},
+                position: {x: fileNode.position.x, y: fileNode.position.y},
             }
+            // フォルダノードにファイルノードを追加
             layoutedFolderNodes.push(newFileNode);
             
             const importsList = fileNode.data.importsList as ImportInfo[];
