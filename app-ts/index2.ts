@@ -5,6 +5,7 @@ import * as fs   from 'fs';
 
 function collectDeps(rootPath: string, isRoot: boolean, deps: Dependency[]) {
 
+
   const src = fs.readFileSync(path.join(rootPath), 'utf-8');
   const sf = ts.createSourceFile(rootPath, src, ts.ScriptTarget.ES2020, true);
 
@@ -19,30 +20,20 @@ function collectDeps(rootPath: string, isRoot: boolean, deps: Dependency[]) {
     if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
       const importPath = node.moduleSpecifier.text;
       const resolvedPath = path.resolve(path.dirname(rootPath), importPath);
-      if (fs.existsSync(resolvedPath)) {
-        dependency.Imports.push({
-          fullPath: resolvedPath,
-          FileName: path.basename(resolvedPath)
-        });
-        collectDeps(resolvedPath, false, deps);
-        return;
-      }
+      const resolvedPathIndex = path.resolve(path.dirname(rootPath), importPath, 'index.ts');
       const resolvedPathTs = path.resolve(path.dirname(rootPath), importPath + '.ts');
-      if (fs.existsSync(resolvedPathTs)) {
-        dependency.Imports.push({
-          fullPath: resolvedPathTs,
-          FileName: path.basename(resolvedPathTs)
-        });
-        collectDeps(resolvedPathTs, false, deps);
-        return;
-      }
       const resolvedPathTsx = path.resolve(path.dirname(rootPath), importPath + '.tsx');
-      if (fs.existsSync(resolvedPathTsx)) {
+      const importFilePath = fs.existsSync(resolvedPathTsx) ? resolvedPathTsx : 
+        fs.existsSync(resolvedPathTs) ? resolvedPathTs : 
+        fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile() ? resolvedPath : resolvedPathIndex;
+
+      console.log('Importing:', importPath, 'from', rootPath);
+      if (fs.existsSync(importFilePath)) {
         dependency.Imports.push({
-          fullPath: resolvedPathTsx,
-          FileName: path.basename(resolvedPathTsx)
+          fullPath: importFilePath,
+          FileName: path.basename(importFilePath)
         });
-        collectDeps(resolvedPathTsx, false, deps);
+        collectDeps(importFilePath, false, deps);
         return;
       }
     }
