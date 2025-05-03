@@ -150,8 +150,19 @@ const getDirectoryNodes = (): LayoutedNodes => {
     let initialEdges: Edge[] = [];    
     folderNodes.forEach((item) => {
         const depth = Number(item.data.depth);
+        // 何世代先の子孫に進めば子が見つかるか計算
+        let childDepth = 0;
+        for(let i = 0; i< 10; i++) {
+            const children = folderNodes.filter((child) => child.id.startsWith(item.id));
+            const depthChildren = children.filter((child) => child.data.depth === depth + i + 1);
+            if(depthChildren.length > 0) {
+                childDepth = i + 1;
+                break;
+            }
+        }
+
         const children = folderNodes.filter((child) => {
-            return child.data.depth === depth + 1 && child.id.startsWith(item.id);
+            return child.data.depth === depth + childDepth && child.id.startsWith(item.id);
         });
         children.forEach((child) => {
             if(item.id === null || child.id === null) {
@@ -248,12 +259,11 @@ const getDirectoryNodes = (): LayoutedNodes => {
                     },
                 };
                 initialEdges.push(edge);
-                console.log('edge', edge);
             });
         });
     });
     
-    console.log('initialEdges', initialEdges);
+    
     return {
         nodes: layoutedFolderNodes,
         edges: initialEdges,
