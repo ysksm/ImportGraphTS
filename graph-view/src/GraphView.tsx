@@ -14,15 +14,23 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import CustomNode from './CustomNode';
+import { CustomFolderNode } from './CustomNode';
 import getLayoutedNodes from './layoutedNodes';
+import { getDirectoryNodes } from './layoutedNodes';
 
 const nodeTypes = {
   custom: CustomNode,
+  customFolder: CustomFolderNode,
+};
+
+const edgeTypes = {
+
 };
 
 const GraphView: React.FC = () => {
-  
-  const layoutedNodes = getLayoutedNodes();
+  const layoutedNodes = getDirectoryNodes();
+
+
   const fitViewOptions: FitViewOptions = { padding: 0.2 };
   const defaultEdgeOptions: DefaultEdgeOptions = { animated: true };
   const [nodes, _setNodes, onNodesChange] = useNodesState(layoutedNodes.nodes);
@@ -31,23 +39,21 @@ const GraphView: React.FC = () => {
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
-  console.log('Initial Nodes:', nodes);
   return (
     <>
       <h1>Dependency Graph</h1>
-      <p>Click and drag to pan, scroll to zoom.</p>
-      <p>Click on a node to see its dependencies.</p>
-      <div style={{ width: '98vw', height: '80vh' }}>
+      <div style={{ width: '98vw', height: '80vh', color: '#333' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
+          // onConnect={onConnect}
           fitView
           fitViewOptions={fitViewOptions}
           defaultEdgeOptions={defaultEdgeOptions}
           nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
         >
           <Background />
           <Controls />
