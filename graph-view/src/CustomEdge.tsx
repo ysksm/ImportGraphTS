@@ -1,10 +1,7 @@
-import React from 'react';
 import {
   BaseEdge,
   EdgeLabelRenderer,
-  EdgeProps,
   getBezierPath,
-  getStraightPath,
   getSmoothStepPath,
 } from '@xyflow/react';
 
@@ -42,11 +39,14 @@ const CustomFileEdge = (props: any) => {
     
     return { x: pointX, y: pointY, angle };
   });
-
   return (
     <>
       {/* Base edge path with gradient */}
-      <svg style={{ position: 'absolute', width: '100%', height: '100%', zIndex: -1 }}>
+      <svg style={{ 
+        position: 'absolute', 
+        width: '100%', 
+        height: '100%', 
+        }}>
         <defs>
           <linearGradient id={`gradient-${id}`} x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#3178C6" stopOpacity="0.5" />
@@ -75,7 +75,6 @@ const CustomFileEdge = (props: any) => {
                 position: 'absolute',
                 transform: `translate(-50%, -50%) translate(${indicator.x}px, ${indicator.y}px) rotate(${indicator.angle}deg)`,
                 pointerEvents: 'all',
-                zIndex: 10,
               }}
               className="nodrag nopan"
             >
@@ -122,7 +121,12 @@ const CustomFolderEdge = (props: any) => {
 
   return (
     <>
-      <svg style={{ position: 'absolute', width: '100%', height: '100%', zIndex: -1 }}>
+      <svg style={{ 
+        position: 'absolute', 
+        width: '100%', 
+        height: '100%', 
+        opacity: 0.5,
+        }}>
         <defs>
           <linearGradient id={`gradient-folder-${id}`} x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#F5A742" stopOpacity="0.5" />
@@ -137,6 +141,7 @@ const CustomFolderEdge = (props: any) => {
           ...style,
           stroke: `url(#gradient-folder-${id})`,
           strokeWidth: 3,
+          opacity: 0.5,
         }} 
         markerEnd={markerEnd} 
       />

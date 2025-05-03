@@ -38,12 +38,7 @@ const GraphView: React.FC = () => {
   const fitViewOptions: FitViewOptions = { padding: 0.2 };
   const defaultEdgeOptions: DefaultEdgeOptions = { 
     animated: true,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      width: 20,
-      height: 20,
-      color: '#3178C6',
-    },
+    zIndex: 100,
   };
   const [nodes, _setNodes, onNodesChange] = useNodesState(layoutedNodes.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedNodes.edges);
@@ -54,7 +49,11 @@ const GraphView: React.FC = () => {
   return (
     <>
       <div>Dependency Graph</div>
-      <div style={{ width: '100vw', height: '95vh', color: '#333', background: '#fff' }}>
+      <div style={{ 
+        width: '100vw', 
+        height: '95vh', 
+        color: '#333', 
+        background: '#fff' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}

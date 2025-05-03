@@ -17,6 +17,8 @@ const CustomFolderNode = (props: any) => {
         alignItems: 'center',
         justifyContent: 'center',
         fontWeight: 'bold',
+        opacity: 0.5,
+        zIndex: 10,
       }}>
       {data?.label}
       <Handle type="target" position={Position.Left} />
@@ -41,6 +43,7 @@ const CustomNode = (props: any) => {
         alignItems: 'center',
         justifyContent: 'center',
         fontWeight: 'bold',
+        zIndex: 100,
       }}>
       {data?.label}
       <Handle type="target" position={Position.Left} />

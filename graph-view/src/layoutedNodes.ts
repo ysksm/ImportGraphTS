@@ -1,4 +1,4 @@
-import { Node, Edge } from '@xyflow/react';
+import { Node, Edge, MarkerType } from '@xyflow/react';
 import dagre from '@dagrejs/dagre';
 import depsData from '../deps.json';
 
@@ -241,7 +241,11 @@ const getDirectoryNodes = (): LayoutedNodes => {
                     target: imp.fullPath,
                     animated: false,
                     type: 'fileEdge',
-
+                    markerEnd:{
+                        type: MarkerType.ArrowClosed,
+                        width: 10,
+                        height: 10,
+                    },
                 };
                 initialEdges.push(edge);
                 console.log('edge', edge);
